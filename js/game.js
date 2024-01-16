@@ -13,8 +13,8 @@ function refreshWindow() {
   if (gameRunning) {
     ctx = gameWindow.getContext("2d");
     clear();
-    drawPlayer(playerLocation);
     drawTarget();
+    drawPlayer(playerLocation);
     drawMines();
     drawText();
   }
