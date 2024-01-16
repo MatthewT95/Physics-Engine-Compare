@@ -32,13 +32,17 @@ function detectHover() {
   }
 
   if (hoverTime >= passDuration) {
-    level++;
-    targetLocation = new Point(
-      getRndInteger(20, gameWindow.width - 20),
-      getRndInteger(20, gameWindow.height - 20)
-    );
-    addMines();
+    nextLevel();
   }
+}
+
+function nextLevel() {
+  level++;
+  targetLocation = new Point(
+    getRndInteger(20, gameWindow.width - 20),
+    getRndInteger(20, gameWindow.height - 20)
+  );
+  addMines();
 }
 
 function clear() {
@@ -201,6 +205,144 @@ function gameOver() {
   ctx.fillText("GAME OVER - LEVEL " + level, 200, gameWindow.height / 2);
 }
 
+var pressedKeys = {};
+window.onkeyup = function (e) {
+  pressedKeys[e.keyCode] = false;
+};
+window.onkeydown = function (e) {
+  pressedKeys[e.keyCode] = true;
+};
+
+function gameStepSimple() {
+  let playerSpeed = 1;
+  if (pressedKeys[65]) {
+    playerLocation.x -= playerSpeed;
+  }
+  if (pressedKeys[68]) {
+    playerLocation.x += playerSpeed;
+  }
+  if (pressedKeys[87]) {
+    playerLocation.y -= playerSpeed;
+  }
+  if (pressedKeys[83]) {
+    playerLocation.y += playerSpeed;
+  }
+
+  // Collision with wall detection
+  if (playerLocation.x < 9) {
+    playerLocation.x = 9;
+  }
+
+  if (playerLocation.x > gameWindow.width - 9) {
+    playerLocation.x = gameWindow.width - 9;
+  }
+
+  if (playerLocation.y < 11) {
+    playerLocation.y = 11;
+  }
+
+  if (playerLocation.y > gameWindow.height - 11) {
+    playerLocation.y = gameWindow.height - 11;
+  }
+}
+
+function gameStepComplex() {
+  if (pressedKeys[65]) {
+    playerVelocityX -= acceleration;
+  }
+  if (pressedKeys[68]) {
+    playerVelocityX += acceleration;
+  }
+  if (pressedKeys[87]) {
+    playerVelocityY -= acceleration;
+  }
+  if (pressedKeys[83]) {
+    playerVelocityY += acceleration;
+  }
+
+  playerLocation.x += playerVelocityX;
+  playerLocation.y += playerVelocityY;
+
+  // Collision with wall detection
+  if (playerLocation.x < 9) {
+    playerLocation.x = 9;
+    playerVelocityX = 0;
+  }
+
+  if (playerLocation.x > gameWindow.width - 9) {
+    playerLocation.x = gameWindow.width - 9;
+    playerVelocityX = 0;
+  }
+
+  if (playerLocation.y < 11) {
+    playerLocation.y = 11;
+    playerVelocityY = 0;
+  }
+
+  if (playerLocation.y > gameWindow.height - 11) {
+    playerLocation.y = gameWindow.height - 11;
+    playerVelocityY = 0;
+  }
+}
+
+function gameStartSimple() {
+  playerLocation = new Point(gameWindowWidth / 2, gameWindowHeight / 2);
+  gameRunning = true;
+  level = 1;
+  mines = [];
+  targetLocation = new Point(
+    getRndInteger(20, gameWindow.width - 20),
+    getRndInteger(20, gameWindow.height - 20)
+  );
+}
+
+function gameStartComplex() {
+  playerLocation = new Point(gameWindowWidth / 2, gameWindowHeight / 2);
+  let playerVelocityX = 0;
+  let playerVelocityY = 0;
+  gameRunning = true;
+  level = 1;
+  mines = [];
+  targetLocation = new Point(
+    getRndInteger(20, gameWindow.width - 20),
+    getRndInteger(20, gameWindow.height - 20)
+  );
+}
+
+function gameStep() {
+  if (gameRunning) {
+    if (gameMode == "basic") {
+      gameStepSimple();
+    } else if (gameMode == "advanced") {
+      gameStepComplex();
+    }
+  }
+}
+
+function newGame() {
+  let gameSelectBox = document.getElementById("PhysicsModePlayer");
+  gameMode = gameSelectBox.value;
+  console.log(gameMode);
+  if (gameMode == "basic") {
+    gameStartSimple();
+    gameRunning = true;
+  } else if (gameMode == "advanced") {
+    gameStartComplex();
+    gameRunning = true;
+  }
+}
+
+let targetSize = 20;
+let hoverTime = 0;
+let gameRunning = true;
+let level = 1;
+let passDuration = 1.5;
+let mines = [];
+let playerVelocityX = 0;
+let playerVelocityY = 0;
+let acceleration = 0.01;
+let gameMode = "basic";
+
 let gameWindowWidth = 1000;
 let gameWindowHeight = 700;
 let gameWindow = document.getElementById("gameWindow");
@@ -209,12 +351,6 @@ let targetLocation = new Point(
   getRndInteger(20, gameWindow.width - 20),
   getRndInteger(20, gameWindow.height - 20)
 );
-let targetSize = 20;
-let hoverTime = 0;
-let gameRunning = true;
-let level = 1;
-let passDuration = 1.5;
-let mines = [];
 
 gameWindow.width = gameWindowWidth;
 gameWindow.height = gameWindowHeight;
@@ -224,11 +360,4 @@ setInterval(refreshWindow, 1000 / 25);
 setInterval(detectHover, 100);
 setInterval(moveMines, 1000 / 10);
 setInterval(detectCollisionPlayerAndMines, 1000 / 10);
-
-var pressedKeys = {};
-window.onkeyup = function (e) {
-  pressedKeys[e.keyCode] = false;
-};
-window.onkeydown = function (e) {
-  pressedKeys[e.keyCode] = true;
-};
+setInterval(gameStep, 10);

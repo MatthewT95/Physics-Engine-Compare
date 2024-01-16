@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Game - Simple Physics</title>
+    <script defer src="./js/game.js"></script>
+  </head>
+  <body>
+    <h1>My Game - Simple Physics</h1>
+    <canvas id="gameWindow"></canvas>
+    <table>
+      <tr>
+        <td><label>Game start: </label></td>
+        <td><button onclick="newGame()">New Game</button></td>
+      </tr>
+      <tr>
+        <td>
+          <label>Physics mode - player motion: </label>
+        </td>
+        <td>
+          <select id="PhysicsModePlayer">
+            <option value="basic">Constant velocity</option>
+            <option value="advanced">Acceleration</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
