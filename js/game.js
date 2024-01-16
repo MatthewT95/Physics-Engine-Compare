@@ -304,8 +304,8 @@ function gameStartSimple() {
 
 function gameStartComplex() {
   playerLocation = new Point(gameWindowWidth / 2, gameWindowHeight / 2);
-  let playerVelocityX = 0;
-  let playerVelocityY = 0;
+  playerVelocityX = 0;
+  playerVelocityY = 0;
   gameRunning = true;
   level = 1;
   mines = [];
