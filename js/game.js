@@ -39,8 +39,8 @@ function detectHover() {
 function nextLevel() {
   level++;
   targetLocation = new Point(
-    getRndInteger(20, gameWindow.width - 20),
-    getRndInteger(20, gameWindow.height - 20)
+    getRndInteger(targetMargin, gameWindow.width - targetMargin),
+    getRndInteger(targetMargin, gameWindow.height - targetMargin)
   );
   addMines();
 }
@@ -297,8 +297,8 @@ function gameStartSimple() {
   level = 1;
   mines = [];
   targetLocation = new Point(
-    getRndInteger(20, gameWindow.width - 20),
-    getRndInteger(20, gameWindow.height - 20)
+    getRndInteger(targetMargin, gameWindow.width - targetMargin),
+    getRndInteger(targetMargin, gameWindow.height - targetMargin)
   );
 }
 
@@ -310,8 +310,8 @@ function gameStartComplex() {
   level = 1;
   mines = [];
   targetLocation = new Point(
-    getRndInteger(20, gameWindow.width - 20),
-    getRndInteger(20, gameWindow.height - 20)
+    getRndInteger(targetMargin, gameWindow.width - targetMargin),
+    getRndInteger(targetMargin, gameWindow.height - targetMargin)
   );
 }
 
@@ -348,6 +348,7 @@ let playerVelocityX = 0;
 let playerVelocityY = 0;
 let acceleration = 0.01;
 let gameMode = "basic";
+let targetMargin = 30;
 
 let gameWindowWidth = 1000;
 let gameWindowHeight = 700;
