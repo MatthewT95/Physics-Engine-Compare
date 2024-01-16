@@ -107,20 +107,26 @@ function addMines() {
     let mineLocation = new Point(0, 0);
     let mineDirection = "";
     if (side == 0) {
-      mineLocation = new Point(16, getRndInteger(16, gameWindow.height - 16));
+      mineLocation = new Point(
+        16,
+        getRndInteger(1, Math.round(gameWindow.height / 20)) * 20
+      );
       mineDirection = "r";
     } else if (side == 1) {
-      mineLocation = new Point(getRndInteger(16, gameWindow.width - 16), 16);
+      mineLocation = new Point(
+        getRndInteger(1, Math.round(gameWindow.width / 20)) * 20,
+        16
+      );
       mineDirection = "d";
     } else if (side == 2) {
       mineLocation = new Point(
         gameWindow.width - 16,
-        getRndInteger(16, gameWindow.height - 16)
+        getRndInteger(1, Math.round(gameWindow.height / 20)) * 20
       );
       mineDirection = "l";
     } else if (side == 3) {
       mineLocation = new Point(
-        getRndInteger(16, gameWindow.width - 16),
+        getRndInteger(1, Math.round(gameWindow.width / 20)) * 20,
         gameWindow.height - 16
       );
       mineDirection = "u";
